@@ -1,0 +1,7 @@
+// Set up ONE object only!
+{
+  "setupFiles" : [
+    "raf/polyfill",
+    "<rootDir>/src/tests/setupTests.js" // MUST use this syntax for project files!
+  ]
+}
