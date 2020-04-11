@@ -74,7 +74,7 @@ test('should edit an expense',() => {
 
 // 3) should not edit expense if id not found
 // Woo-hoo! I passed this one on my own!
-test('',() => {
+test('should not edit expense if id not found',() => {
   const description='edited description';
   const action={
     type: 'EDIT_EXPENSE',
@@ -87,3 +87,20 @@ test('',() => {
 
   expect(state).toEqual(expenses);
 });
+
+// Challenge:
+// 1) dispatch an action
+// 2) expect all the expenses you passed in to be whats inside the state
+// 3) any existing expenses should be *gone*
+//    so: 
+//     set up some initial ones & pass to the expenses reducer
+//     define different expenses for the action obj to verify its working properly
+test('should set expenses', () => {
+  const action = {
+    type: 'SET_EXPENSES',
+    expenses: [expenses[1]]
+  };
+  const state = expensesReducer(expenses, action);
+  expect(state).toEqual([expenses[1]]);
+}); 
+
