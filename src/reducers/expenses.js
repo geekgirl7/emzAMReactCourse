@@ -27,7 +27,7 @@ export default (state=expensesReducerDefaultState,action) => {
       });
     case 'SET_EXPENSES':
       // don't care about the state since we'll override it
-      console.log('action.expenses: ', action.expenses);
+      // console.log('action.expenses: ', action.expenses);
       return action.expenses; 
     default:
       return state;

@@ -14,6 +14,7 @@ import database from '../firebase/firebase';
 // function runs (has the ability to dispatch other actions
 //   and do whatever it wants)
 
+//===============================================================
 // ADD_EXPENSE
 export const addExpense = (expense) => ({
   type: 'ADD_EXPENSE',
@@ -48,6 +49,7 @@ export const startAddExpense = (expenseData = {}) => {
   };
 };
 
+//===============================================================
 // SET_EXPENSES: 
 // will *actually* manipulate the Redux store
 export const setExpenses = (expenses) => ({
@@ -86,18 +88,28 @@ export const startSetExpenses = () => {
           ...childSnapshot.val()
         });
       });
-      console.log('startSetExpenses: ', expenses);
+      //console.log('startSetExpenses: ', expenses);
       dispatch(setExpenses(expenses));
     });   
   };
 };
 
+//===============================================================
 // REMOVE_EXPENSE
 export const removeExpense = ({ id } = {}) => ({
   type: 'REMOVE_EXPENSE',
   id
 });
 
+export const startRemoveExpense = ({ id } = {}) => {
+  return(dispatch) => {
+    return database.ref(`expenses/${id}`).remove().then(() => {
+      dispatch(removeExpense({id}));
+    });
+  };
+};
+
+//===============================================================
 // EDIT_EXPENSE
 export const editExpense = (id, updates) => ({
   type: 'EDIT_EXPENSE',

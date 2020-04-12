@@ -1,21 +1,21 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import ExpenseForm from './ExpenseForm';
-import {editExpense,removeExpense} from '../actions/expenses';
+import {editExpense,startRemoveExpense} from '../actions/expenses';
 // don't need to import these separately!!!
-//import {removeExpense} from '../actions/expenses';
+//import {startRemoveExpense} from '../actions/expenses';
 
 
 //=======================================================
 // Challenge from "Testing EditExpensePage" video:
 // Part 1:
 //   Refactor EditExpensePage to be a class based component
-//   Setup mapDispatchToProps: editExpense and removeExpense
+//   Setup mapDispatchToProps: editExpense and startRemoveExpense
 //   Start app in development mode and make sure the component still works
 //// Part 2: Write the test cases
 ////   *should render EditExpensePage + snapshot
 ////   *should handle editExpense (use spies)
-////   *should handle removeExpense (use spies)
+////   *should handle startRemoveExpense (use spies)
 ////   *c/use beforeEach()
 //=======================================================
 export class EditExpensePage extends React.Component {
@@ -25,7 +25,7 @@ export class EditExpensePage extends React.Component {
     this.props.history.push( '/' );
   }
   onRemove = () => {
-    this.props.removeExpense({id: this.props.expense.id});
+    this.props.startRemoveExpense({id: this.props.expense.id});
     this.props.history.push( '/' );
   };
   render () {
@@ -47,8 +47,8 @@ const mapDispatchToProps = (dispatch, props) => ({
   // Note: needed to look at react-redux docs for mapDispatchToProps
   //   (I looked at Andrew's code to try and figure it out)
   // Note: *data* is just the arg name and it gets passed through as-is
-  //   to removeExpense(data)
-  removeExpense: (data) => dispatch(removeExpense(data))
+  //   to startRemoveExpense(data)
+  startRemoveExpense: (data) => dispatch(startRemoveExpense(data))
 });
 //=======================================================
 

@@ -7,25 +7,25 @@ import expenses from '../fixtures/expenses';
 // Challenge from "Testing EditExpensePage" video:
 //// Part 1:
 ////   Refactor EditExpensePage to be a class based component
-////  Setup mapDispatchToProps: editExpense and removeExpense
+////  Setup mapDispatchToProps: editExpense and startRemoveExpense
 ////   Start app in development mode and make sure the component still works
 // Part 2: Write the test cases
 //   *should render EditExpensePage + snapshot
 //   *should handle editExpense (use spies)
-//   *should handle removeExpense (use spies)
+//   *should handle startRemoveExpense (use spies)
 //   *c/use beforeEach()
 //=======================================================
 // Each test will start with a 'clean' copy of the following:
-let editExpense, removeExpense, history, wrapper;
+let editExpense, startRemoveExpense, history, wrapper;
 
 beforeEach(() => {
   editExpense = jest.fn();
-  removeExpense = jest.fn();
+  startRemoveExpense = jest.fn();
   history = { push: jest.fn() };
   wrapper = shallow(
   <EditExpensePage 
     editExpense={editExpense}  
-    removeExpense={removeExpense}
+    startRemoveExpense={startRemoveExpense}
     history={history}
     expense={expenses[1]}  
   />);
@@ -48,7 +48,7 @@ test('should handle editExpense', () => {
   expect(editExpense).toHaveBeenLastCalledWith(expenses[1].id, expenses[1]);
 });
 
-test('should handle removeExpense', () => {
+test('should handle startRemoveExpense', () => {
   // Removing an expense does NOT involve ExpenseForm!
   // Be careful with cut/paste! To verify: LOOK at what you need!
 
@@ -59,8 +59,8 @@ test('should handle removeExpense', () => {
   expect(history.push).toHaveBeenLastCalledWith('/');
   
   // The answer to the following is found in EditExpensePage: onRemove():
-  //   this.props.removeExpense( ***{id: this.props.expense.id}*** );
+  //   this.props.startRemoveExpense( ***{id: this.props.expense.id}*** );
   // LOOK first!
   // Don't forget that id:expenses[1].id is an OBJECT - needs curly braces
-    expect(removeExpense).toHaveBeenLastCalledWith({id:expenses[1].id});
+    expect(startRemoveExpense).toHaveBeenLastCalledWith({id:expenses[1].id});
 });

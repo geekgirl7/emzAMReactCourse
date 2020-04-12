@@ -3,15 +3,17 @@ import thunk from 'redux-thunk';
 import { 
   startAddExpense, 
   addExpense, 
-  editExpense, 
+  editExpense,   
+  startRemoveExpense,
   removeExpense, 
-  setExpenses,
-  startSetExpenses } from '../../actions/expenses';
+  startSetExpenses,
+  setExpenses
+  } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
 
 const createMockStore = configureMockStore([thunk]);
-
+//=== beforeEach() ==============================================
 // need to create persistent test data 
 // need .done() bc this is async so beforeEach() won't run till data has synced
 beforeEach((done) => { // pass in done here
@@ -21,26 +23,10 @@ beforeEach((done) => { // pass in done here
   });
   database.ref('expenses').set(expensesData).then(() => done());  // wait for done()
 });
+//===============================================================
 
-test('should setup remove expense action object', () => {
-  const action = removeExpense({ id: '123abc' });
-  expect(action).toEqual({
-    type: 'REMOVE_EXPENSE',
-    id: '123abc'
-  });
-});
 
-test('should setup edit expense action object', () => {
-  const action = editExpense('123abc', { note: 'New note value' });
-  expect(action).toEqual({
-    type: 'EDIT_EXPENSE',
-    id: '123abc',
-    updates: {
-      note: 'New note value'
-    }
-  });
-});
-
+//=== ADD_EXPENSE ===============================================
 test('should setup add expense action object with provided values', () => {
   const action = addExpense(expenses[2]);
   expect(action).toEqual({
@@ -101,16 +87,15 @@ test('should add expense with defaults to database and store', (done) => {
   });
 });
 
-
+//=== SET_EXPENSES ==============================================
 test('should setup set expense action object with data', () => {
   const action = setExpenses(expenses);
-  //console.log('action: ', action, '\nexpenses: ', expenses);
   expect(action).toEqual({
     type: 'SET_EXPENSES',
     expenses
   })
 });
-//===============================================================
+
 test('should fetch the expenses from firebase', (done) => {
   const store = createMockStore({});
   store.dispatch(startSetExpenses()).then(() => {
@@ -122,4 +107,45 @@ test('should fetch the expenses from firebase', (done) => {
     done();
   });
 });
-//===============================================================
+
+
+//=== REMOVE_EXPENSE ============================================
+// Note: if this isn't the last test in the file, the expense will
+//   be removed BUT replaced with other tests, such as ADD_EXPENSE
+//   fbs color = red, but same # of expenses will be the end result as
+//   the tests run.
+test('should setup remove expense action object', () => {
+  const action = removeExpense({ id: '123abc' });
+  expect(action).toEqual({
+    type: 'REMOVE_EXPENSE',
+    id: '123abc'
+  });
+});
+
+test('should remove expense from firebase', (done) => {
+  const store = createMockStore({});
+  const id = expenses[2].id;
+  store.dispatch(startRemoveExpense({ id })).then(() => {
+    const actions = store.getActions(); // returned from startRemoveExpense
+    expect(actions[0]).toEqual({
+      type: 'REMOVE_EXPENSE',
+      id
+    });
+    return database.ref(`expenses/${id}`).once('value');
+  }).then((snapshot) => {  // use snapshot to make sure it was actually deleted
+    expect(snapshot.val()).toBeFalsy(); // return value s/b null
+    done();
+  });
+});
+
+//=== EDIT_EXPENSE ==============================================
+// test('should setup edit expense action object', () => {
+//   const action = editExpense('123abc', { note: 'New note value' });
+//   expect(action).toEqual({
+//     type: 'EDIT_EXPENSE',
+//     id: '123abc',
+//     updates: {
+//       note: 'New note value'
+//     }
+//   });
+// });
