@@ -102,7 +102,7 @@ export const removeExpense = ({ id } = {}) => ({
 });
 
 export const startRemoveExpense = ({ id } = {}) => {
-  return(dispatch) => {
+  return (dispatch) => {
     return database.ref(`expenses/${id}`).remove().then(() => {
       dispatch(removeExpense({id}));
     });
@@ -117,4 +117,44 @@ export const editExpense = (id, updates) => ({
   updates
 });
 
+export const startEditExpense = (id, updates) => {
+  return (dispatch) => {
+    return database.ref(`expenses/${id}`)
+      .update(updates)
+      .then( () => {
+        dispatch(editExpense(id, updates));
+    });
+  };
+};
 
+
+// startX boilerplate:
+// export const startX = (ais) => {
+//    return (dispatch) = () => {
+//       return database.ref(location)
+//       .CRUD_op()
+//       .then( () => {
+//         dispatch(original action item)
+//       });  
+//     };
+//  };
+
+// 1: export const startX = (action item sig) => {};
+
+// 2: export const startX = (ais) => {
+//    return (dispatch) = () => {};
+//  };
+
+// 3: export const startX = (ais) => {
+//    return (dispatch) = () => {
+//       return database.ref(location).CRUD_op().then();  
+//     };
+//  };
+
+// 4: export const startX = (ais) => {
+//    return (dispatch) = () => {
+//       return database.ref(location).CRUD_op().then( () => {
+//         dispatch(original action item)
+//       });  
+//     };
+//  };

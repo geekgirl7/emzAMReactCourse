@@ -16,15 +16,15 @@ import expenses from '../fixtures/expenses';
 //   *c/use beforeEach()
 //=======================================================
 // Each test will start with a 'clean' copy of the following:
-let editExpense, startRemoveExpense, history, wrapper;
+let startEditExpense, startRemoveExpense, history, wrapper;
 
 beforeEach(() => {
-  editExpense = jest.fn();
+  startEditExpense = jest.fn();
   startRemoveExpense = jest.fn();
   history = { push: jest.fn() };
   wrapper = shallow(
   <EditExpensePage 
-    editExpense={editExpense}  
+  startEditExpense={startEditExpense}  
     startRemoveExpense={startRemoveExpense}
     history={history}
     expense={expenses[1]}  
@@ -40,12 +40,12 @@ test('should render EditExpensePage correctly', () => {
 // Make sure the test description + code matches what you're testing!
 // for EACH TEST: ***LOOK*** at EditExpensePage to see what is being called 
 //   (what is being ***passed into*** onSubmit()???)
-test('should handle editExpense', () => {
+test('should handle startEditExpense', () => {
   wrapper.find('ExpenseForm').prop('onSubmit')(expenses[1]);
   expect(history.push).toHaveBeenLastCalledWith('/');
   // in EditExpensePage, editExpense() is called like so:
   //   this.props.editExpense( this.props.expense.id,expense );
-  expect(editExpense).toHaveBeenLastCalledWith(expenses[1].id, expenses[1]);
+  expect(startEditExpense).toHaveBeenLastCalledWith(expenses[1].id, expenses[1]);
 });
 
 test('should handle startRemoveExpense', () => {

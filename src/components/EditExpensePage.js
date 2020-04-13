@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import ExpenseForm from './ExpenseForm';
-import {editExpense,startRemoveExpense} from '../actions/expenses';
+import {startEditExpense,startRemoveExpense} from '../actions/expenses';
 // don't need to import these separately!!!
 //import {startRemoveExpense} from '../actions/expenses';
 
@@ -21,7 +21,7 @@ import {editExpense,startRemoveExpense} from '../actions/expenses';
 export class EditExpensePage extends React.Component {
   onSubmit=( expense ) => {
     // don't forget *this.* inside a ***class***
-    this.props.editExpense( this.props.expense.id,expense );
+    this.props.startEditExpense( this.props.expense.id,expense );
     this.props.history.push( '/' );
   }
   onRemove = () => {
@@ -43,7 +43,7 @@ export class EditExpensePage extends React.Component {
 
 const mapDispatchToProps = (dispatch, props) => ({
   // Look at what is being passed into the func ABOVE
-  editExpense: (id, expense) => dispatch(editExpense(id, expense)),
+  startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
   // Note: needed to look at react-redux docs for mapDispatchToProps
   //   (I looked at Andrew's code to try and figure it out)
   // Note: *data* is just the arg name and it gets passed through as-is
