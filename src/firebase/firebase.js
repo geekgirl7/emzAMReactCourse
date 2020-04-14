@@ -15,11 +15,11 @@ firebase.initializeApp(firebaseConfig);
 
 // // Make code easier to read:
 const database = firebase.database();
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 // // originally: firebase.database().ref().set();
 // // now: database.ref().set();
 
-export { firebase, database as default };
-
+export { firebase, googleAuthProvider, database as default };
 
 // // Keep the following for (programming firebase) reference:
 // database.ref('expenses').push({
