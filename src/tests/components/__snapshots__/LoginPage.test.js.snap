@@ -14,9 +14,10 @@ exports[`should render LoginPage correctly 1`] = `
       It's time to get your expenses under control
     </p>
     <button
+      className="button"
       onClick={[Function]}
     >
-      Login
+      Login with Google
     </button>
   </div>
 </div>

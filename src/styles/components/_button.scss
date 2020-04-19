@@ -3,8 +3,15 @@
   border: none;
   border-radius: 3px;
   color: white;
+  display: inline-block;
   font-size: $font-size-large;
   font-weight: 500;
+  line-height: 1;
   margin: 0 0 $l-size 0;
   padding: $s-size;
+  text-decoration: none;
+}
+
+.button--link{
+  background: none;
 }
