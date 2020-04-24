@@ -1,8 +1,6 @@
 .input-group {
-  /* align-items: center; */
   display: flex;
   flex-direction: column;
-  /* justify-content: space-evenly; */
   margin-bottom: $m-size;
 
   @media(min-width: $desktop-breakpoint) {
