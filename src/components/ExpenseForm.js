@@ -1,105 +1,74 @@
 import React from 'react';
 import moment from 'moment';
-import {SingleDatePicker} from 'react-dates';
-//import 'react-dates/lib/css/_datepicker.css'; // move out of this file -> app.js
+import { SingleDatePicker } from 'react-dates';
 
-// Remember to use the "addExpense" option on 
-//   the menu!!!!! it defaults to "Home"!!!
-// const date = new Date();
-//const now=moment();
-//console.log(now.format('MMM Do, YYYY'));
-
-// Modify state using conditional logic
-//  AddExpensePage is OK with '' for default
-//  EditExpensePage requires the *current* values
-// For state values for *editing* an expense, need current values
-//  OR acceptable defaults.
-//  To do this, need to define state in the *constructor function*
-//  (just move the whole thing into the constructor func WITH props,
-//  ***remembering to call*** super(props))
-//  Note: this step is just refactoring!
-// Use conditional logic to determine the correct values for
-//   add/edit expense - they're NOT always the same!
-//     amount: calc in pennies, but need to display a string with decimals
-//     createAt: need to pass the ***timeStamp*** to moment() ***from props***
 export default class ExpenseForm extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+
+    this.state = {
       description: props.expense ? props.expense.description : '',
-      note: props.expense ? props.expense.note: '',
-      amount: props.expense ? (props.expense.amount / 100).toString(): '',
-      createdAt: props.expense ? moment(props.expense.createdAt): moment(),
+      note: props.expense ? props.expense.note : '',
+      amount: props.expense ? (props.expense.amount / 100).toString() : '',
+      createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
       calendarFocused: false,
       error: ''
     };
   }
-  onDescriptionChange=(e) => {
-    const description=e.target.value;
-    this.setState(() => ({description}));
+  onDescriptionChange = (e) => {
+    const description = e.target.value;
+    this.setState(() => ({ description }));
   };
-  onNoteChange=(e) => {
-    const note=e.target.value;
-    this.setState(() => ({note}));
+  onNoteChange = (e) => {
+    const note = e.target.value;
+    this.setState(() => ({ note }));
   };
-  onAmountChange=(e) => {
-    const amount=e.target.value;
-    // if there's not an amount, or amount matches...
-    // matches = empty string or at least 1 num, 
-    //  followed by up to 2 decimals
-    // This will allow the user to clear the field if needed
-    if(!amount||amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState(() => ({amount}));
+  onAmountChange = (e) => {
+    const amount = e.target.value;
+
+    if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState(() => ({ amount }));
     }
   };
-  onDateChange=(createdAt) => {
-    // prevent user from clearing date value
-    //  (don't want empty date)
-    if(createdAt) {
-      this.setState(() => ({createdAt}));
-    }// else do nothing
+  onDateChange = (createdAt) => {
+    if (createdAt) {
+      this.setState(() => ({ createdAt }));
+    }
   };
-  onFocusChange=({focused}) => {
-    this.setState(() => ({calendarFocused: focused}));
+  onFocusChange = ({ focused }) => {
+    this.setState(() => ({ calendarFocused: focused }));
   };
   onSubmit = (e) => {
-    // prevent full page refresh
     e.preventDefault();
-    if(!this.state.description || !this.state.amount){
-      // error state='Please provide description & amount'
-      this.setState(() => ({error: 'Please provide description & amount'}));
+
+    if (!this.state.description || !this.state.amount) {
+      this.setState(() => ({ error: 'Please provide description & amount' }));
     } else {
-      // Clear the error
-      //console.log('submitted');
-      this.setState(() => ({error: ''}));
+      this.setState(() => ({ error: '' }));
       this.props.onSubmit({
         description: this.state.description,
-        amount: parseFloat(this.state.amount, 10) *100,
+        amount: parseFloat(this.state.amount, 10) * 100,
         createdAt: this.state.createdAt.valueOf(),
         note: this.state.note
       });
     }
   };
-
-  // Challenge: wire up error: set and clear
-  // Conditionally render the error string
   render() {
     return (
-      <div>
-        {this.state.error && <p>{this.state.error}</p>}
-        <form onSubmit={this.onSubmit}>
+        <form className="form" onSubmit={this.onSubmit}>
+          {this.state.error && <p className=".form__error">{this.state.error}</p>}
           <input
-            className="text-input"
             type="text"
             placeholder="Description"
             autoFocus
+            className="text-input"
             value={this.state.description}
             onChange={this.onDescriptionChange}
           />
           <input
-            className="text-input"
             type="text"
             placeholder="Amount"
+            className="text-input"
             value={this.state.amount}
             onChange={this.onAmountChange}
           />
@@ -112,16 +81,16 @@ export default class ExpenseForm extends React.Component {
             isOutsideRange={() => false}
           />
           <textarea
-            className="textarea"
             placeholder="Add a note for your expense (optional)"
+            className="textarea"
             value={this.state.note}
             onChange={this.onNoteChange}
           >
           </textarea>
-          <button>Add Expense</button>
+          <div>
+            <button className="button">Save Expense</button>
+          </div>
         </form>
-      </div>
     )
   }
 }
-
